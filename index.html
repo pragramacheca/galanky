@@ -1,11 +1,95 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Viva Fit</title>
+    <title>GALANKY — Identidade Editorial de Luxo</title>
+    <link rel="stylesheet" href="./style.css">
 </head>
+
 <body>
-    <h1> Site em desenvolvimento</h1>
+
+    <nav class="navbar">
+        <div class="nav-logo">GALANKY</div>
+        <div class="nav-commerce">
+            <div class="nav-links">
+                <a href="./index.html">Início</a>
+                <a href="./pags/product.html">Coleção</a>
+                <a href="./pags/destaque.html">Destaque</a>
+                <a href="./pags/sobre.html">Sobre</a>
+                <a href="./pags/contact.html">Contato</a>
+            </div>
+            <a class="cart-link" href="./pags/carrinho.html">Carrinho (<span data-cart-count>0</span>)</a>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <span class="hero-subtitle">Haute Maroquinerie</span>
+        <h1 class="hero-title">Onde a estrutura encontra a expressão</h1>
+        <p class="hero-description">Explorando o maximalismo e a moda como manifestação cultural em peças esculturais de
+            lote único.</p>
+        <div>
+            <a href="./pags/product.html" class="btn">Explorar Coleção</a>
+        </div>
+    </header>
+
+    <section class="section-container collection-section">
+        <h2 class="section-title">Obras em Destaque</h2>
+        <div class="product-grid">
+
+            <div class="product-card">
+                <div class="product-image-container">
+                    <img src="./pags/assets/bag01.png" alt="Bolsa Mini Estruturada">
+                </div>
+                <h3>01. Fluy Park</h3>
+                <p>Alça Rígida // Acabamento Metálico</p>
+                <div class="price">R$ 2.000,00</div><button type="button" class="btn" data-add="fluy-park">Adicionar ao carrinho</button>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image-container">
+                    <img src="./pags/assets/bag02.jpg" alt="Bolsa Triangular">
+                </div>
+                <h3>02. Elegant Pure Dark</h3>
+                <p>Corrente de Metal // Acabamento Plissado</p>
+                <div class="price">R$ 2.000,00</div><button type="button" class="btn" data-add="elegant-pure-dark">Adicionar ao carrinho</button>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image-container">
+                    <img src="./pags/assets/bag03.png" alt="Bolsa Escultural">
+                </div>
+                <h3>03. Cube Pure Black</h3>
+                <p>Formato Origami // Detalhe Metálico</p>
+                <div class="price">R$ 3.000,00</div><button type="button" class="btn" data-add="cube-pure-black">Adicionar ao carrinho</button>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="semana-section">
+        <div class="section-container semana-flex">
+            <div class="semana-content">
+                <span class="semana-tag">★ L'Atelier de la Semaine</span>
+                <h2>04. Ultra Purple</h2>
+                <p>A peça selecionada desta semana destaca-se pelo formato orgânico marcante com detalhes finos em
+                    cristais e fecho central em ímã oculto, unindo luxo e expressão em lote único.</p>
+                <a href="./pags/destaque.html" class="btn">Conhecer a Obra</a>
+            </div>
+            <div class="semana-visual">
+                <div class="product-image-container feature-crop">
+                    <img src="./pags/assets/bag04.jpg" alt="Bolsa Escultural Orgânica">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 GALANKY — Todos os direitos reservados.</p>
+    </footer>
+
+<script src="./app.js"></script>
 </body>
+
 </html>
