@@ -131,7 +131,9 @@ function generateOrder() {
   const payment = document.querySelector('input[name="payment"]:checked')?.value || 'pix';
   const installments = payment === 'credit' ? Number(document.querySelector('#installments')?.value || 1) : 1;
   const total = cart.reduce((sum, item) => { const p = getProduct(item.id); return sum + (p ? p.price * item.qty : 0); }, 0);
-  const installmentValue = total / installments;
+  const interestRate = payment === 'credit' && installments > 1 ? 0.07 : 0;
+  const finalTotal = total * (1 + interestRate);
+  const installmentValue = finalTotal / installments;
   const now = new Date();
   const inspectionDays = 2;
   const ready = new Date(now); ready.setDate(ready.getDate() + inspectionDays);
@@ -148,6 +150,8 @@ function generateOrder() {
     payment,
     installments,
     total,
+    interestRate,
+    finalTotal,
     installmentValue,
     customer: Object.fromEntries(new FormData(form).entries()),
     cart
@@ -174,7 +178,7 @@ function renderTracking() {
   const steps = ['Produto preparado', 'Vistoria de qualidade', 'Pronto para envio', 'Produto a caminho', 'Entregue'];
   box.innerHTML = `<div class="tracking-head"><div><span class="eyebrow">Pedido ${order.code}</span><h1>${state.label}</h1><p>${state.desc}</p></div><div class="tracking-count"><small>Previsão de entrega</small><strong>${state.left === 0 ? 'Hoje' : `Faltam ${state.left} dias`}</strong><span>${formatDate(new Date(order.eta))}</span></div></div>
     <div class="timeline timeline-five">${steps.map((step,i) => `<div class="timeline-step ${i <= state.index ? 'done' : ''} ${i === state.index ? 'current' : ''}"><span>${i < state.index ? '✓' : i+1}</span><strong>${step}</strong></div>`).join('')}</div>
-    <div class="tracking-details"><div><small>Destino</small><strong>${order.delivery.city} — ${order.delivery.uf}</strong><span>CEP ${order.delivery.cep}</span></div><div><small>Itens</small><strong>${items}</strong><span>Pagamento demonstrativo: ${order.payment === 'credit' ? `Cartão de crédito — ${order.installments}x de ${money(order.installmentValue)}` : order.payment === 'debit' ? 'Cartão de débito — à vista' : 'PIX'}</span></div><div><small>Prazo</small><strong>${order.delivery.days} dias de transporte</strong><span>+ 1–2 dias de vistoria</span></div></div>`;
+    <div class="tracking-details"><div><small>Destino</small><strong>${order.delivery.city} — ${order.delivery.uf}</strong><span>CEP ${order.delivery.cep}</span></div><div><small>Itens</small><strong>${items}</strong><span>Pagamento demonstrativo: ${order.payment === 'credit' ? `Cartão de crédito — ${order.installments}x de ${money(order.installmentValue)}${order.interestRate ? ` — 7% de juros` : ''}` : order.payment === 'debit' ? 'Cartão de débito — à vista' : 'PIX'}</span></div><div><small>Prazo</small><strong>${order.delivery.days} dias de transporte</strong><span>+ 1–2 dias de vistoria</span></div></div>`;
 }
 
 function getCartTotal() {
@@ -189,8 +193,10 @@ function updateInstallmentResult() {
   if (selected !== 'credit') { result.innerHTML = ''; return; }
   const total = getCartTotal();
   const installments = Number(select.value || 1);
-  const value = total / installments;
-  result.innerHTML = `<strong>${installments}x de ${money(value)}</strong><span>Total final: ${money(total)} <em>sem juros (simulação)</em></span>`;
+  const interestRate = installments > 1 ? 0.07 : 0;
+  const finalTotal = total * (1 + interestRate);
+  const value = finalTotal / installments;
+  result.innerHTML = `<strong>${installments}x de ${money(value)}</strong><span>Total final: ${money(finalTotal)} ${interestRate ? '<em>inclui 7% de juros (simulação)</em>' : '<em>sem juros (simulação)</em>'}</span>`;
 }
 
 function setupCheckout() {
