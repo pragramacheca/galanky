@@ -1,9 +1,9 @@
 const PRODUCTS = [
-  { id: 'fluy-park', name: 'Fluy Park', subtitle: 'Alça Rígida // Acabamento Metálico', price: 2000, image: 'bag01.png' },
-  { id: 'elegant-pure-dark', name: 'Elegant Pure Dark', subtitle: 'Corrente de Metal // Acabamento Plissado', price: 2000, image: 'bag02.jpg' },
-  { id: 'cube-pure-black', name: 'Cube Pure Black', subtitle: 'Formato Origami // Detalhe Metálico', price: 3000, image: 'bag03.png' },
-  { id: 'ultra-purple', name: 'Ultra Purple', subtitle: 'Detalhes em Cristais // Fecho Central', price: 4000, image: 'bag04.jpg' },
-  { id: 'ultra-black', name: 'Ultra Black', subtitle: 'Estrutura Rígida // Acabamento Fosco', price: 4000, image: 'bag05.jpg' }
+  { id: 'fluy-park', name: 'Fluy Park', subtitle: 'Alça Rígida // Acabamento Metálico', price: 2000, image: 'bag01.png', description: 'Uma peça de presença marcante, com silhueta estruturada e alça rígida. O acabamento metálico cria um contraste elegante e transforma a bolsa em protagonista da composição.', material: 'Material sintético estruturado e ferragens metálicas', weight: 'Aproximadamente 620 g', dimensions: '22 × 16 × 9 cm', color: 'Preto com detalhes metálicos', finish: 'Estruturado com brilho acetinado' },
+  { id: 'elegant-pure-dark', name: 'Elegant Pure Dark', subtitle: 'Corrente de Metal // Acabamento Plissado', price: 2000, image: 'bag02.jpg', description: 'Design de linhas suaves com textura plissada e corrente metálica. Uma combinação de movimento e estrutura para composições noturnas ou produções de impacto.', material: 'Material sintético texturizado e corrente metálica', weight: 'Aproximadamente 540 g', dimensions: '20 × 14 × 7 cm', color: 'Preto', finish: 'Plissado com ferragens polidas' },
+  { id: 'cube-pure-black', name: 'Cube Pure Black', subtitle: 'Formato Origami // Detalhe Metálico', price: 3000, image: 'bag03.png', description: 'Inspirada nas formas geométricas, a Cube Pure Black explora volumes e dobras em uma construção escultural. O detalhe metálico finaliza a peça sem tirar o protagonismo da forma.', material: 'Material sintético de alta estruturação e metal', weight: 'Aproximadamente 700 g', dimensions: '19 × 19 × 11 cm', color: 'Preto', finish: 'Geométrico com detalhe metálico' },
+  { id: 'ultra-purple', name: 'Ultra Purple', subtitle: 'Detalhes em Cristais // Fecho Central', price: 4000, image: 'bag04.jpg', description: 'Uma bolsa maximalista que assume o brilho como elemento central. Os detalhes em cristais e o fecho destacado criam uma peça expressiva, pensada para ser o ponto focal do visual.', material: 'Material sintético e aplicações decorativas em cristal', weight: 'Aproximadamente 760 g', dimensions: '21 × 15 × 8 cm', color: 'Roxo', finish: 'Aplicações brilhantes e fecho central' },
+  { id: 'ultra-black', name: 'Ultra Black', subtitle: 'Estrutura Rígida // Acabamento Fosco', price: 4000, image: 'bag05.jpg', description: 'Volume arquitetônico e acabamento fosco definem a Ultra Black. Sua estrutura rígida cria uma presença contemporânea, com visual marcante e minimalismo nas superfícies.', material: 'Material sintético rígido e ferragens discretas', weight: 'Aproximadamente 810 g', dimensions: '23 × 17 × 10 cm', color: 'Preto', finish: 'Fosco e estruturado' }
 ];
 
 const ASSET_PREFIX = location.pathname.includes('/pags/') ? './assets/' : './pags/assets/';
@@ -67,6 +67,54 @@ function cartAction(action, id) {
   saveCart(cart); renderCart();
 }
 
+function renderProductDetail() {
+  const target = document.querySelector('[data-product-detail]');
+  if (!target) return;
+  const id = new URLSearchParams(location.search).get('id');
+  const product = getProduct(id);
+  if (!product) {
+    target.innerHTML = `<div class="empty-state product-not-found"><span class="eyebrow">GALANKY // Coleção</span><h1>Peça não encontrada</h1><p>Não encontramos esse produto. Volte à coleção para explorar as peças disponíveis.</p><a class="btn" href="./product.html">Voltar à coleção</a></div>`;
+    return;
+  }
+  document.title = `${product.name} — GALANKY`;
+  target.innerHTML = `
+    <div class="product-detail-layout">
+      <div class="product-detail-image"><img src="./assets/${product.image}" alt="${product.name}"></div>
+      <div class="product-detail-info">
+        <a class="back-to-collection" href="./product.html">← Voltar à coleção</a>
+        <span class="eyebrow">GALANKY // Peça ${String(PRODUCTS.indexOf(product) + 1).padStart(2, '0')}</span>
+        <h1>${product.name}</h1>
+        <p class="product-detail-subtitle">${product.subtitle}</p>
+        <div class="product-detail-price">${money(product.price)}</div>
+        <p class="product-detail-description">${product.description}</p>
+        <div class="product-specs">
+          <div><span>Material</span><strong>${product.material}</strong></div>
+          <div><span>Peso aproximado</span><strong>${product.weight}</strong></div>
+          <div><span>Dimensões (A × L × P)</span><strong>${product.dimensions}</strong></div>
+          <div><span>Cor</span><strong>${product.color}</strong></div>
+          <div><span>Acabamento</span><strong>${product.finish}</strong></div>
+        </div>
+        
+        <button type="button" class="btn product-detail-add" data-add="${product.id}">Adicionar ao carrinho</button>
+        <a class="detail-cart-link" href="./carrinho.html">Ver carrinho <span data-cart-count>0</span></a>
+      </div>
+    </div>`;
+  setupProductButtons();
+}
+
+function setupProductCards() {
+  document.querySelectorAll('[data-open-product]').forEach(card => {
+    const open = () => { const detailPath = location.pathname.includes('/pags/') ? './produto.html' : './pags/produto.html'; location.href = `${detailPath}?id=${encodeURIComponent(card.dataset.openProduct)}`; };
+    card.addEventListener('click', event => {
+      if (event.target.closest('button, a')) return;
+      open();
+    });
+    card.addEventListener('keydown', event => {
+      if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); open(); }
+    });
+  });
+}
+
 function setupProductButtons() {
   document.querySelectorAll('[data-add]').forEach(btn => btn.addEventListener('click', () => addToCart(btn.dataset.add)));
 }
@@ -104,8 +152,8 @@ async function calculateDelivery() {
     const data = await lookupCep(input.value); const info = deliveryInfo(data.uf);
     const inspection = '1–2 dias';
     result.innerHTML = `<div class="delivery-success"><div><span class="eyebrow">Localização confirmada</span><strong>${data.localidade} — ${data.uf}</strong></div>
-      <div class="delivery-metrics"><div><small>Transporte</small><strong>${info.days} dias</strong></div><div><small>Vistoria</small><strong>${inspection}</strong></div><div><small>Prazo demonstrativo</small><strong>${info.days + 1}–${info.days + 2} dias úteis</strong></div></div>
-      <p>O prazo acima é uma simulação criada para o projeto escolar. A vistoria de qualidade acontece antes do envio.</p></div>`;
+      <div class="delivery-metrics"><div><small>Transporte</small><strong>${info.days} dias</strong></div><div><small>Vistoria</small><strong>${inspection}</strong></div><div><small>Prazo estimado</small><strong>${info.days + 1}–${info.days + 2} dias úteis</strong></div></div>
+      <p>A vistoria de qualidade acontece antes do envio.</p></div>`;
     document.querySelector('#checkout-cep').value = input.value;
     document.querySelector('#checkout-location').value = `${data.localidade} — ${data.uf}`;
     window.__delivery = { ...info, city: data.localidade, uf: data.uf, cep: input.value.replace(/\D/g,'') };
@@ -172,13 +220,13 @@ function trackingState(order) {
 function renderTracking() {
   const box = document.querySelector('[data-tracking]'); if (!box) return;
   let order; try { order = JSON.parse(localStorage.getItem(ORDER_KEY)); } catch { order = null; }
-  if (!order) { box.innerHTML = '<div class="empty-state"><h2>Nenhum pedido encontrado</h2><p>Finalize uma compra demonstrativa para gerar um rastreio.</p><a class="btn" href="./product.html">Ir para a coleção</a></div>'; return; }
+  if (!order) { box.innerHTML = '<div class="empty-state"><h2>Nenhum pedido encontrado</h2><p>Finalize um pedido para acompanhar o rastreamento.</p><a class="btn" href="./product.html">Ir para a coleção</a></div>'; return; }
   const state = trackingState(order);
   const items = order.cart.map(i => { const p = getProduct(i.id); return `${p.name} × ${i.qty}`; }).join(' • ');
   const steps = ['Produto preparado', 'Vistoria de qualidade', 'Pronto para envio', 'Produto a caminho', 'Entregue'];
   box.innerHTML = `<div class="tracking-head"><div><span class="eyebrow">Pedido ${order.code}</span><h1>${state.label}</h1><p>${state.desc}</p></div><div class="tracking-count"><small>Previsão de entrega</small><strong>${state.left === 0 ? 'Hoje' : `Faltam ${state.left} dias`}</strong><span>${formatDate(new Date(order.eta))}</span></div></div>
     <div class="timeline timeline-five">${steps.map((step,i) => `<div class="timeline-step ${i <= state.index ? 'done' : ''} ${i === state.index ? 'current' : ''}"><span>${i < state.index ? '✓' : i+1}</span><strong>${step}</strong></div>`).join('')}</div>
-    <div class="tracking-details"><div><small>Destino</small><strong>${order.delivery.city} — ${order.delivery.uf}</strong><span>CEP ${order.delivery.cep}</span></div><div><small>Itens</small><strong>${items}</strong><span>Pagamento demonstrativo: ${order.payment === 'credit' ? `Cartão de crédito — ${order.installments}x de ${money(order.installmentValue)}${order.interestRate ? ` — 7% de juros` : ''}` : order.payment === 'debit' ? 'Cartão de débito — à vista' : 'PIX'}</span></div><div><small>Prazo</small><strong>${order.delivery.days} dias de transporte</strong><span>+ 1–2 dias de vistoria</span></div></div>`;
+    <div class="tracking-details"><div><small>Destino</small><strong>${order.delivery.city} — ${order.delivery.uf}</strong><span>CEP ${order.delivery.cep}</span></div><div><small>Itens</small><strong>${items}</strong><span>${order.payment === 'credit' ? `Cartão de crédito — ${order.installments}x de ${money(order.installmentValue)}${order.interestRate ? ` — 7% de juros` : ''}` : order.payment === 'debit' ? 'Cartão de débito — à vista' : 'PIX'}</span></div><div><small>Prazo</small><strong>${order.delivery.days} dias de transporte</strong><span>+ 1–2 dias de vistoria</span></div></div>`;
 }
 
 function getCartTotal() {
@@ -217,7 +265,7 @@ function setupCheckout() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  updateCartCount(); setupProductButtons(); renderCart(); setupCheckout(); renderTracking();
+  updateCartCount(); setupProductButtons(); setupProductCards(); renderProductDetail(); renderCart(); setupCheckout(); renderTracking();
   document.querySelector('[data-cart-list]')?.addEventListener('click', e => { const btn = e.target.closest('[data-action]'); if (btn) cartAction(btn.dataset.action, btn.dataset.id); });
   document.querySelector('#cep')?.addEventListener('input', e => { let v = e.target.value.replace(/\D/g,'').slice(0,8); if (v.length > 5) v = v.slice(0,5) + '-' + v.slice(5); e.target.value = v; });
   setInterval(() => { if (document.querySelector('[data-tracking]')) renderTracking(); }, 60000);
