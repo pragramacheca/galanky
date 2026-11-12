@@ -29,6 +29,9 @@ function addToCart(id) {
 function updateCartCount() {
   const count = getCart().reduce((sum, i) => sum + i.qty, 0);
   document.querySelectorAll('[data-cart-count]').forEach(el => el.textContent = count);
+  document.querySelectorAll('.floating-cart-btn').forEach(el => {
+    el.setAttribute('aria-label', `Abrir carrinho com ${count} ${count === 1 ? 'item' : 'itens'}`);
+  });
 }
 
 function showToast(message) {
@@ -265,7 +268,7 @@ function setupCheckout() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  updateCartCount(); setupProductButtons(); setupProductCards(); renderProductDetail(); renderCart(); setupCheckout(); renderTracking();
+  setupProductButtons(); setupProductCards(); renderProductDetail(); updateCartCount(); renderCart(); setupCheckout(); renderTracking();
   document.querySelector('[data-cart-list]')?.addEventListener('click', e => { const btn = e.target.closest('[data-action]'); if (btn) cartAction(btn.dataset.action, btn.dataset.id); });
   document.querySelector('#cep')?.addEventListener('input', e => { let v = e.target.value.replace(/\D/g,'').slice(0,8); if (v.length > 5) v = v.slice(0,5) + '-' + v.slice(5); e.target.value = v; });
   setInterval(() => { if (document.querySelector('[data-tracking]')) renderTracking(); }, 60000);

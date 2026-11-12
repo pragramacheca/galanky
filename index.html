@@ -13,14 +13,13 @@
     <nav class="navbar">
         <div class="nav-logo">GALANKY</div>
         <div class="nav-commerce">
-            <div class="nav-links">
-                <a href="./index.html">Início</a>
-                <a href="./pags/product.html">Coleção</a>
-                <a href="./pags/destaque.html">Destaque</a>
-                <a href="./pags/sobre.html">Sobre</a>
-                <a href="./pags/contact.html">Contato</a>
-            </div>
-            <a class="cart-link" href="./pags/carrinho.html">Carrinho (<span data-cart-count>0</span>)</a>
+        <div class="nav-links">
+            <a href="./index.html">Início</a>
+            <a href="./pags/product.html">Coleção</a>
+            <a href="./pags/destaque.html">Destaque</a>
+            <a href="./pags/sobre.html">Sobre</a>
+            <a href="./pags/contact.html">Contato</a>
+        </div>
         </div>
     </nav>
 
@@ -38,31 +37,37 @@
         <h2 class="section-title">Obras em Destaque</h2>
         <div class="product-grid">
 
-            <div class="product-card" data-open-product="fluy-park" role="link" tabindex="0" aria-label="Ver detalhes do produto">
+            <div class="product-card" data-open-product="fluy-park" role="link" tabindex="0"
+                aria-label="Ver detalhes do produto">
                 <div class="product-image-container">
                     <img src="./pags/assets/bag01.png" alt="Bolsa Mini Estruturada">
                 </div>
                 <h3>01. Fluy Park</h3>
                 <p>Alça Rígida // Acabamento Metálico</p>
-                <div class="price">R$ 2.000,00</div><button type="button" class="btn" data-add="fluy-park">Adicionar ao carrinho</button>
+                <div class="price">R$ 2.000,00</div><button type="button" class="btn" data-add="fluy-park">Adicionar ao
+                    carrinho</button>
             </div>
 
-            <div class="product-card" data-open-product="elegant-pure-dark" role="link" tabindex="0" aria-label="Ver detalhes do produto">
+            <div class="product-card" data-open-product="elegant-pure-dark" role="link" tabindex="0"
+                aria-label="Ver detalhes do produto">
                 <div class="product-image-container">
                     <img src="./pags/assets/bag02.jpg" alt="Bolsa Triangular">
                 </div>
                 <h3>02. Elegant Pure Dark</h3>
                 <p>Corrente de Metal // Acabamento Plissado</p>
-                <div class="price">R$ 2.000,00</div><button type="button" class="btn" data-add="elegant-pure-dark">Adicionar ao carrinho</button>
+                <div class="price">R$ 2.000,00</div><button type="button" class="btn"
+                    data-add="elegant-pure-dark">Adicionar ao carrinho</button>
             </div>
 
-            <div class="product-card" data-open-product="cube-pure-black" role="link" tabindex="0" aria-label="Ver detalhes do produto">
+            <div class="product-card" data-open-product="cube-pure-black" role="link" tabindex="0"
+                aria-label="Ver detalhes do produto">
                 <div class="product-image-container">
                     <img src="./pags/assets/bag03.png" alt="Bolsa Escultural">
                 </div>
                 <h3>03. Cube Pure Black</h3>
                 <p>Formato Origami // Detalhe Metálico</p>
-                <div class="price">R$ 3.000,00</div><button type="button" class="btn" data-add="cube-pure-black">Adicionar ao carrinho</button>
+                <div class="price">R$ 3.000,00</div><button type="button" class="btn"
+                    data-add="cube-pure-black">Adicionar ao carrinho</button>
             </div>
 
         </div>
@@ -85,11 +90,20 @@
         </div>
     </section>
 
-    <footer>
+    
+    <a class="floating-cart-btn" href="./pags/carrinho.html" aria-label="Abrir carrinho" title="Abrir carrinho">
+      <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle>
+        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+      </svg>
+      <span class="cart-badge" data-cart-count aria-live="polite">0</span>
+    </a>
+
+<footer>
         <p>&copy; 2026 GALANKY — Todos os direitos reservados.</p>
     </footer>
 
-<script src="./app.js"></script>
+    <script src="./app.js"></script>
 </body>
 
 </html>
